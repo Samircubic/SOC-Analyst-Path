@@ -4,6 +4,7 @@
 Полезно для базовой разведки (Reconnaissance) в сетях и проверки безопасности.
 """
 import socket
+import time
 
 def scan_port(ip, port):
     # Создаем сокет с таймаутом 1 секунда, чтобы скрипт не завис надолго
@@ -25,5 +26,10 @@ if __name__ == "__main__":
     ports_to_check = [53, 80, 443, 22] # DNS, HTTP, HTTPS, SSH
     
     print(f"Запуск сканирования хоста {target_ip}...")
+    start_time = time.time() # Фиксируем время начала
+    
     for p in ports_to_check:
         scan_port(target_ip, p)
+        
+    end_time = time.time() # Фиксируем время конца
+    print(f"\n[INFO] Сканирование завершено за {end_time - start_time:.2f} секунд.")
