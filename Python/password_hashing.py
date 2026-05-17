@@ -37,6 +37,23 @@ if __name__ == "__main__":
     cracked_password = dictionary_attack(saved_hash, hacker_dictionary)
     
     if cracked_password:
-        print(f"[!!!] УСПЕХ ХАКЕРА: Пароль подобран! Это: '{cracked_password}'")
+        print(f"[!!!] УСПЕХ ХАКЕРА: Пароль подобран! Это: '{cracked_password}'\n")
     else:
-        print("[-] Пароль безопасен, в словаре хакера его нет.")
+        print("[-] Пароль безопасен, в словаре хакера его нет.\n")
+        
+    print("-" * 50)
+    # НОВОЕ ДОБАВЛЕНИЕ: Защита от таких атак с помощью "Соли" (Salt)
+    print("[*] ДЕМОНСТРАЦИЯ ЗАЩИТЫ: Использование 'Соли' (Salting)")
+    
+    # Соль - это случайный набор символов, уникальный для каждого пользователя
+    salt = "random_symbols_!@#$" 
+    
+    # Мы приклеиваем соль к паролю ДО хеширования
+    salted_password = weak_password + salt
+    salted_hash = hash_password(salted_password)
+    print(f"[Сервер] Хеш с добавленной солью:\n{salted_hash}")
+    
+    # Теперь, даже если пароль "qwerty" есть в словаре хакера, хеш не совпадет!
+    cracked_salted = dictionary_attack(salted_hash, hacker_dictionary)
+    if not cracked_salted:
+        print(f"[+] Хакер ПОТЕРПЕЛ НЕУДАЧУ! Соль защитила слабый пароль 'qwerty'.")
