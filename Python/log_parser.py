@@ -22,16 +22,17 @@ def extract_and_analyze_ips(log_data):
     return ip_counts
 
 if __name__ == "__main__":
-    # Имитация сырого лога веб-сервера (например, Nginx или Apache)
-    sample_logs = """
-    192.168.1.10 - - [16/May/2026:10:00:01] "GET /index.html HTTP/1.1" 200
-    10.0.0.5 - - [16/May/2026:10:00:05] "POST /login HTTP/1.1" 401
-    10.0.0.5 - - [16/May/2026:10:00:06] "POST /login HTTP/1.1" 401
-    10.0.0.5 - - [16/May/2026:10:00:07] "POST /login HTTP/1.1" 401
-    172.16.0.50 - - [16/May/2026:10:01:00] "GET /images/logo.png HTTP/1.1" 200
-    10.0.0.5 - - [16/May/2026:10:01:05] "POST /login HTTP/1.1" 401
-    """
+    import os
+    # Читаем лог веб-сервера из внешнего файла
+    file_path = os.path.join(os.path.dirname(__file__), '..', 'Данные', 'log_parser_raw.txt')
     
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            sample_logs = f.read()
+    except FileNotFoundError:
+        print(f"[-] Файл данных не найден: {file_path}")
+        exit(1)
+        
     print("[*] Анализ логов начат...\n")
     results = extract_and_analyze_ips(sample_logs)
     
